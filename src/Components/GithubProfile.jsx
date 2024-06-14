@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { FaCodeFork } from "react-icons/fa6";
 
 const GitHubProfile = ({ username }) => {
   const [profile, setProfile] = useState(null);
@@ -9,7 +10,6 @@ const GitHubProfile = ({ username }) => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Fetch GitHub profile data
     const fetchProfileData = async () => {
       setLoading(true);
       setError(null);
@@ -53,7 +53,7 @@ const GitHubProfile = ({ username }) => {
     };
 
     fetchProfileData();
-  }, [username]); // Re-fetch data when the username changes
+  }, [username]);
 
   if (loading) {
     return <div className="text-center mt-4">Loading...</div>;
@@ -68,8 +68,8 @@ const GitHubProfile = ({ username }) => {
   }
 
   return (
-    <div className="bg-gray-100  p-4 flex flex-col items-center">
-      <div className="w-full  flex flex-col lg:flex-row bg-white shadow-lg rounded-lg overflow-hidden">
+    <div className="bg-gray-100 p-4 flex flex-col items-center">
+      <div className="w-full flex flex-col lg:flex-row bg-white shadow-lg rounded-lg overflow-hidden">
         {/* Profile Section */}
         <div className="p-6 bg-indigo-900 text-white flex flex-col items-center lg:w-1/3">
           <img
@@ -101,20 +101,24 @@ const GitHubProfile = ({ username }) => {
           </div>
         </div>
 
-        {/* Repositories and Followers Sections */}
+        {/* Repositories Section */}
         <div className="p-6 bg-gray-50 flex-grow">
           <h2 className="text-xl font-semibold mb-4">
             Repositories ({repositories.length})
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 mb-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
             {repositories.map((repo) => (
               <div
                 key={repo.id}
-                className="bg-white p-4 rounded-lg shadow hover:shadow-md transition-shadow">
-                <h3 className="text-lg font-semibold">{repo.name}</h3>
-                <p className="text-sm text-gray-600 mt-1">{repo.description}</p>
-                <div className="mt-3 text-sm flex items-center justify-between text-gray-500">
-                  <span>🍴 {repo.forks_count} forks</span>
+                className="bg-white  rounded-lg text-center bg-projectColor shadow overflow-hidden transition-shadow border border-gray-200">
+                <h3 className="text-lg font-semibold mb-2">{repo.name}</h3>
+                <p className="text-sm text-gray-600 mb-4">
+                  {repo.description || "No description available"}
+                </p>
+                <div className="flex justify-around p-2  text-sm w-full bg-projectColor2 text-gray-500">
+                  <span>
+                    <FaCodeFork /> {repo.forks_count} forks
+                  </span>
                   <span>⭐ {repo.stargazers_count} stars</span>
                 </div>
               </div>
@@ -125,20 +129,24 @@ const GitHubProfile = ({ username }) => {
           <h2 className="text-xl font-semibold mb-4">
             Followers ({followers.length})
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {followers.map((follower) => (
               <div
                 key={follower.id}
-                className="bg-white p-4 rounded-lg shadow hover:shadow-md transition-shadow flex items-center">
+                className="bg-projectColor2  p-4 rounded-lg shadow hover:shadow-md transition-shadow flex flex-col items-center border border-gray-200">
                 <img
                   src={follower.avatar_url}
                   alt={follower.login}
-                  className="w-12 h-12 rounded-full mr-4"
+                  className="w-16 h-16 rounded-full mb-2"
                 />
-                <div>
+                <div className="text-center">
                   <h3 className="text-lg font-semibold">{follower.login}</h3>
-                  <a href={follower.html_url} className="text-sm text-blue-500">
-                    @{follower.login}
+                  <a
+                    href={follower.html_url}
+                    className="text-sm text-blue-600 mt-2"
+                    target="_blank"
+                    rel="noopener noreferrer">
+                    view {follower.login}
                   </a>
                 </div>
               </div>
@@ -149,20 +157,24 @@ const GitHubProfile = ({ username }) => {
           <h2 className="text-xl font-semibold mb-4 mt-8">
             Following ({following.length})
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {following.map((user) => (
               <div
                 key={user.id}
-                className="bg-white p-4 rounded-lg shadow hover:shadow-md transition-shadow flex items-center">
+                className="bg-yellow-100 p-4 rounded-lg shadow hover:shadow-md transition-shadow flex flex-col items-center border border-gray-200">
                 <img
                   src={user.avatar_url}
                   alt={user.login}
-                  className="w-12 h-12 rounded-full mr-4"
+                  className="w-16 h-16 rounded-full mb-2"
                 />
-                <div>
+                <div className="text-center">
                   <h3 className="text-lg font-semibold">{user.login}</h3>
-                  <a href={user.html_url} className="text-sm text-blue-500">
-                    @{user.login}
+                  <a
+                    href={user.html_url}
+                    className="text-sm text-blue-600 mt-2"
+                    target="_blank"
+                    rel="noopener noreferrer">
+                    view {user.login}
                   </a>
                 </div>
               </div>
