@@ -12,7 +12,7 @@ const App = () => {
   return (
     <div>
       <Navbar onSearch={handleSearch} />
-      <GitHubProfile username={username} />
+      <GitHubProfile username={username} onUserClick={handleSearch} />
     </div>
   );
 };

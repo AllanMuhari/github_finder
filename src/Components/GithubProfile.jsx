@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { FaCodeFork } from "react-icons/fa6";
 
-const GitHubProfile = ({ username }) => {
+const GitHubProfile = ({ username, onUserClick }) => {
   const [profile, setProfile] = useState(null);
   const [repositories, setRepositories] = useState([]);
   const [followers, setFollowers] = useState([]);
@@ -110,12 +110,12 @@ const GitHubProfile = ({ username }) => {
             {repositories.map((repo) => (
               <div
                 key={repo.id}
-                className="bg-white  rounded-lg text-center bg-projectColor shadow overflow-hidden transition-shadow border border-gray-200">
+                className="bg-white rounded-lg text-center bg-projectColor shadow overflow-hidden transition-shadow border border-gray-200">
                 <h3 className="text-lg font-semibold mb-2">{repo.name}</h3>
                 <p className="text-sm text-gray-600 mb-4">
                   {repo.description || "No description available"}
                 </p>
-                <div className="flex justify-around p-2  text-sm w-full bg-projectColor2 text-gray-500">
+                <div className="flex justify-around p-2 text-sm w-full bg-projectColor2 text-gray-500">
                   <span>
                     <FaCodeFork /> {repo.forks_count} forks
                   </span>
@@ -133,7 +133,8 @@ const GitHubProfile = ({ username }) => {
             {followers.map((follower) => (
               <div
                 key={follower.id}
-                className="bg-projectColor2  p-4 rounded-lg shadow hover:shadow-md transition-shadow flex flex-col items-center border border-gray-200">
+                className="bg-projectColor2 p-4 rounded-lg shadow hover:shadow-md transition-shadow flex flex-col items-center border border-gray-200 cursor-pointer"
+                onClick={() => onUserClick(follower.login)}>
                 <img
                   src={follower.avatar_url}
                   alt={follower.login}
@@ -161,7 +162,8 @@ const GitHubProfile = ({ username }) => {
             {following.map((user) => (
               <div
                 key={user.id}
-                className="bg-yellow-100 p-4 rounded-lg shadow hover:shadow-md transition-shadow flex flex-col items-center border border-gray-200">
+                className="bg-yellow-100 p-4 rounded-lg shadow hover:shadow-md transition-shadow flex flex-col items-center border border-gray-200 cursor-pointer"
+                onClick={() => onUserClick(user.login)}>
                 <img
                   src={user.avatar_url}
                   alt={user.login}
