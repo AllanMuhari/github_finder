@@ -1,4 +1,3 @@
-// Components/GitHubProfile.js
 import React, { useEffect, useState } from "react";
 import { FaCodeFork } from "react-icons/fa6";
 import useStore from "../store/store";
