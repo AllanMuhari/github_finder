@@ -1,7 +1,10 @@
+// Components/GitHubProfile.js
 import React, { useEffect, useState } from "react";
 import { FaCodeFork } from "react-icons/fa6";
+import useStore from "../store/store";
 
-const GitHubProfile = ({ username, onUserClick }) => {
+const GitHubProfile = ({ onUserClick }) => {
+  const username = useStore((state) => state.username);
   const [profile, setProfile] = useState(null);
   const [repositories, setRepositories] = useState([]);
   const [followers, setFollowers] = useState([]);
@@ -14,30 +17,36 @@ const GitHubProfile = ({ username, onUserClick }) => {
       setLoading(true);
       setError(null);
       try {
-        const [
-          profileResponse,
-          reposResponse,
-          followersResponse,
-          followingResponse,
-        ] = await Promise.all([
-          fetch(`https://api.github.com/users/${username}`),
-          fetch(`https://api.github.com/users/${username}/repos`),
-          fetch(`https://api.github.com/users/${username}/followers`),
-          fetch(`https://api.github.com/users/${username}/following`),
-        ]);
-
-        if (
-          !profileResponse.ok ||
-          !reposResponse.ok ||
-          !followersResponse.ok ||
-          !followingResponse.ok
-        ) {
-          throw new Error("Failed to fetch data from GitHub API");
+        const profileResponse = await fetch(
+          `https://api.github.com/users/${username}`
+        );
+        if (!profileResponse.ok) {
+          throw new Error("Failed to fetch profile data");
         }
-
         const profileData = await profileResponse.json();
+
+        const reposResponse = await fetch(
+          `https://api.github.com/users/${username}/repos`
+        );
+        if (!reposResponse.ok) {
+          throw new Error("Failed to fetch repositories data");
+        }
         const reposData = await reposResponse.json();
+
+        const followersResponse = await fetch(
+          `https://api.github.com/users/${username}/followers`
+        );
+        if (!followersResponse.ok) {
+          throw new Error("Failed to fetch followers data");
+        }
         const followersData = await followersResponse.json();
+
+        const followingResponse = await fetch(
+          `https://api.github.com/users/${username}/following`
+        );
+        if (!followingResponse.ok) {
+          throw new Error("Failed to fetch following data");
+        }
         const followingData = await followingResponse.json();
 
         setProfile(profileData);
@@ -46,7 +55,7 @@ const GitHubProfile = ({ username, onUserClick }) => {
         setFollowing(followingData);
       } catch (error) {
         console.error("Error fetching data: ", error);
-        setError("Failed to fetch data from GitHub API");
+        setError(error.message);
       } finally {
         setLoading(false);
       }

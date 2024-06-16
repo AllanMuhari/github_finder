@@ -1,10 +1,12 @@
 import React, { useState } from "react";
+import useStore from "../store/store";
 
-const Navbar = ({ onSearch }) => {
-  const [username, setUsername] = useState("");
+const Navbar = () => {
+  const [input, setInput] = useState("");
+  const setUsername = useStore((state) => state.setUsername);
 
   const handleSearch = () => {
-    onSearch(username);
+    setUsername(input);
   };
 
   return (
@@ -21,8 +23,8 @@ const Navbar = ({ onSearch }) => {
           <input
             type="text"
             placeholder="enter a username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
             className="border border-gray-300 rounded px-4 py-2 focus:outline-none focus:border-blue-500"
           />
           <button

@@ -1,18 +1,16 @@
-import React, { useState } from "react";
+import React from "react";
 import Navbar from "./Components/Navbar";
 import GitHubProfile from "./Components/GithubProfile";
+import useStore from "./store/store";
 
 const App = () => {
-  const [username, setUsername] = useState("AllanMuhari");
-
-  const handleSearch = (newUsername) => {
-    setUsername(newUsername);
-  };
+  const username = useStore((state) => state.username);
+  const setUsername = useStore((state) => state.setUsername);
 
   return (
     <div>
-      <Navbar onSearch={handleSearch} />
-      <GitHubProfile username={username} onUserClick={handleSearch} />
+      <Navbar onSearch={setUsername} />
+      <GitHubProfile username={username} onUserClick={setUsername} />
     </div>
   );
 };
